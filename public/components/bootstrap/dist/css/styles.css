@@ -1,0 +1,114 @@
+.pila-buttons-bg {
+    height: 100vh;
+    background: white;
+    padding-top: 65px;
+    min-height: 600px;
+}
+
+.dashboard-bg {
+    height: 100vh;
+    /*    background: #2EC0F9;*/
+    background: white;
+    padding-top: 65px;
+    min-height: 600px;
+}
+
+body {
+    position: relative;
+}
+
+.credits-bg {
+    height: 25vh;
+    background: #2E3C40;
+    color: antiquewhite;
+}
+
+#drop-image {
+    margin-top: -6px;
+}
+
+.round {
+    border-radius: 24px;
+}
+
+.btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus {
+    outline: 0 none;
+}
+
+.btn-primary {
+    background: #2EC0F9;
+    color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+    background: #2EC0F9;
+}
+
+.btn-primary:active,
+.btn-primary.active {
+    background: #2EC0F9;
+    box-shadow: none;
+}
+
+.grande {
+    width: 34vh;
+    height: 24vh;
+    font-size: 5vh;
+    /*    margin-top: 4vh*/
+}
+
+h1 {
+    color: black;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.separator {
+    height: 1px;
+    width: 100%;
+    display: block;
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: black;
+}
+
+.navbar-brand {
+    font-family: 'Varela Round', sans-serif;
+}
+
+.varela-font {
+    font-family: 'Varela Round', sans-serif;
+}
+
+.margen-grande {
+    margin: 3vh;
+}
+
+.centrado {
+    margin-left: auto;
+    margin-right: auto;
+    display: center;
+}
+
+.text-azul {
+    color: #2EC0F9;
+}
+
+.margin-top {
+    margin-top: 4vh;
+}
+
+

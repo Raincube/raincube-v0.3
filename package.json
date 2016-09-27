@@ -1,0 +1,26 @@
+{
+  "name": "raincube-v2",
+  "version": "1.0.0",
+  "description": "Decentralized water management system",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Raincube/raincube-v2.git"
+  },
+  "author": "Rigoberto Acifuina (https://github.com/racifuina)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Raincube/raincube-v2/issues"
+  },
+  "homepage": "https://github.com/Raincube/raincube-v2#readme",
+  "dependencies": {
+    "aws-sdk": "^2.6.4",
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "moment-timezone": "^0.5.5",
+    "socket.io": "^1.4.8"
+  }
+}
