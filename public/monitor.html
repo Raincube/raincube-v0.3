@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <!--    Google Fonts    -->
     <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <style>
+        .navbar-header {
+            width: 100%;
+            padding-left: 5px;
+            padding-right: 5px;
+            position: relative;
+        }
+    </style>
 
     <!--  Favicon  -->
     <link rel="apple-touch-icon" sizes="57x57" href="./images/apple-icon-57x57.png">
@@ -41,9 +49,10 @@
             <div class="navbar-header">
                 <a href="/" class="navbar-brand" id="drop-image"><img src="./images/favicon-32x32.png"></a>
                 <a href="/" class="navbar-brand"><strong>Rain</strong>cube</a>
-                <a href="/monitor" class="btn btn-link navbar-btn pull-right" data-toggle="tooltip" data-placement="bottom" title="TCP/IP Connections" >Active connections: <strong id="cantidadLabel" style="color:black;"></strong></a>
+<!--                <a href="/" class="navbar-brand" style="padding-left:0px;"><strong>Rain</strong>cube</a>-->
+                <a href="/monitor" class="btn btn-link navbar-btn pull-right" data-toggle="tooltip" data-placement="bottom" title="TCP/IP Connections"><small>Active connections: </small><strong id="cantidadLabel" style="color:black;"></strong></a>
             </div>
-         </div>
+        </div>
 
     </nav>
 
