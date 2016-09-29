@@ -114,3 +114,10 @@ h1 {
 }
 
 
+
+.navbar-header {
+        width: 100%;
+        padding-left: 5px;
+        padding-right: 5px;
+        position: relative;
+    }
