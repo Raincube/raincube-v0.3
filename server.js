@@ -11,9 +11,8 @@ app.use(express.static('public'));
 var mensajesMonitor = [];
 
 //VARIABLES PARA TCP.
-var TCP_HOST = "127.0.0.1";
 var TCP_PORT = 3150;
-var PORT = process.env.PORT || 3000;
+var HTTP_PORT = process.env.PORT || 8080;
 var connections_number = 0;
 //LIBRERIAS PARA TCP
 var querystring = require('querystring');
@@ -142,9 +141,9 @@ net.createServer(function (connection) {
     connection.on('data', function (data) {
         //Converting buffer data to String
         var data_str = data.toString();
-        console.log("NEW DATA ON TCP: ", data_str);
         //dump all carrier return
         data_str = data_str.replace('\r\n', '');
+        newMonitorInfo(data_str);
         //CONVIRTIENDO DATA DE STRING A JSON.
         var telemetry_data = querystring.parse(data_str);
 
@@ -156,7 +155,7 @@ net.createServer(function (connection) {
 
             console.log("GOOD DATA");
 
-            newMonitorInfo(data_str);
+//            newMonitorInfo(data_str);
 
             currentLevels.pila = telemetry_data.p;
             currentLevels.raincube = telemetry_data.r;
@@ -180,7 +179,7 @@ net.createServer(function (connection) {
     console.log('TCP Server listening 😎');
 });
 
-http.listen(PORT, function () {
+http.listen(HTTP_PORT, function () {
     console.log("Web Server Started 😎");
 });
 
