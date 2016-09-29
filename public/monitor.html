@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Raincube || Monitor de Conexiones</title>
+    <title>Raincube-Garden-Monitor</title>
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <!-- Custom CSS -->
@@ -16,17 +16,21 @@
 </head>
 
 <body>
-    <div class="container" id="jumboMonitor">
-        <div class="row">
-            <div class="jumbotron col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h1 id="jumboLabel">Monitor de conexiones</h1>
-                <p>Número de conexiones activas <a class="btn btn-default" role="button"><strong id="cantidadLabel"></strong></a></p>
-            </div>
-        </div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand" id="drop-image"><img src="./images/favicon-32x32.png"></a>
+                <a href="/" class="navbar-brand"><strong>Rain</strong>cube</a>
 
+            </div>
+            <a href="/monitor" class="pull-right" data-toggle="tooltip" title="Reload page" style="padding-top:15px;">Active connections: <strong id="cantidadLabel" style="color:black;"></strong></a>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top:75px;">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h3><span class="glyphicon glyphicon-th-list"></span> Ultimos datos recibidos</h3>
+                <h3><span class="glyphicon glyphicon-th-list"></span><span class="varela-font"> Last data packages received</span></h3>
                 <div class="separator"></div>
             </div>
 
@@ -48,6 +52,10 @@
     <script type="text/javascript" src="js/moment.js"></script>
     <script type="application/javascript">
         var socket = io();
+
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
 
         socket.on("connectionsUpdated", function (data) {
             $("#cantidadLabel").text(data.cantidad);
