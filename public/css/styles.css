@@ -27,6 +27,7 @@ body {
     margin-top: -6px;
 }
 
+/*
 .round {
     border-radius: 24px;
 }
@@ -68,8 +69,9 @@ body {
     width: 34vh;
     height: 24vh;
     font-size: 5vh;
-    /*    margin-top: 4vh*/
+        margin-top: 4vh
 }
+*/
 
 h1 {
     color: black;
