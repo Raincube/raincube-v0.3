@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {} else {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
     // Add scrollspy to <body>
     $('body').scrollspy({
         target: ".navbar",
@@ -64,7 +67,7 @@ socket.on("newLevel", function (levels) {
 
     var pilaHeight = 50;
     var raincubeHeight = 90;
-    var correccionPila  = levels.pila - 35;
+    var correccionPila = levels.pila - 35;
     var pilaWaterHeight = pilaHeight - correccionPila;
     var raincubeWaterHeight = raincubeHeight - levels.raincube;
 
@@ -113,3 +116,22 @@ socket.on("newLevel", function (levels) {
     $("#pilaBar").text(noDecimalsPilaPercentage + " %");
 
 });
+
+function manualOpen(zone) {
+    socket.emit("openValve", {
+        zone: zone
+    });
+}
+
+function manualClose(zone) {
+    socket.emit("closeValve", {
+        zone: zone
+    });
+}
+
+function setLength(length, zone) {
+    socket.emit("updateLength", {
+        zone: zone,
+        length: length
+    });
+}

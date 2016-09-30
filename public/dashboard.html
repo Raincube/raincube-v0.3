@@ -9,12 +9,11 @@
     <title>Raincube-Garden</title>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
     <link rel="stylesheet" href="css/font-awesome.min.css">
-
+    <link href="css/styles.css" rel="stylesheet">
+    <link rel='stylesheet' type='text/css' href='css/timepicki.css' />
     <!--    Google Fonts    -->
     <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-
     <!--  Favicon  -->
     <link rel="apple-touch-icon" sizes="57x57" href="./images/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="./images/apple-icon-60x60.png">
@@ -50,20 +49,15 @@
 
             <div class="collapse navbar-collapse navbar-right" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li class="text-azul"><a href="#dashboard" class="varela-font">Dashboard</a></li>
-                    <li><a href="/logout" class="varela-font">Logout</a></li>
+                    <!--                    <li class="text-azul"><a href="#dashboard" class="varela-font">Dashboard</a></li>-->
+                    <li><a href="/logout" class="varela-font" id="logout-button">Logout</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section class="dashboard-bg" id="dashboard">
-
+    <section class="dashboard-bg varela-font" id="dashboard">
         <div class="container">
-
-            <h1 class="text-center">Dashboard</h1>
-            <div class="separator"></div>
-
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 margin-top">
                     <div class="panel panel-primary">
@@ -79,17 +73,334 @@
                     </div>
                 </div>
             </div>
+            <!--Raincube Level row end-->
+            <h3 class="varela-font text-center ">Zones</h3>
+            <!--Zone's Settings row Start-->
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-center">Zone 1</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-center">
+                                <p class="text-center varela-font" style="color:gray">Automatic mode</p>
+                                <div class="btn-group btn-group-justified " data-toggle="buttons">
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Sunday" data-container="body">
+                                        <input type="checkbox" name="options" id="option1" autocomplete="off">S
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Monday" data-container="body">
+                                        <input type="checkbox" name="options" id="option2" autocomplete="off">M
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Tuesday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">T
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Wednesday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">W
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Thursday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">T
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Friday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">F
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Saturday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">S
+                                    </label>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <small>Time:</small>
+                                <div class="btn-group dropup">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        00:00 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" >
+                                        <li><a onclick="setTime(this, 1)">00:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">01:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">02:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">03:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">04:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">05:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">06:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">07:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">08:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">09:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">10:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">11:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">12:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">13:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">14:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">15:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">16:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">17:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">18:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">19:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">20:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">21:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">22:00</a></li>
+                                        <li><a onclick="setTime(this, 1)">23:00</a></li>
+                                    </ul>
+                                </div>
+<!--                            </div>-->
+<!--                            <div class="text-center">-->
+                                <small style="padding-left:8px;">Length:</small>
+                                <div class="btn-group dropup">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       5 minutes <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" >
+                                        <li><a onclick="setLength(5, 1)">5 minutes</a></li>
+                                        <li><a onclick="setLength(10, 1)">10 minutes</a></li>
+                                        <li><a onclick="setLength(15, 1)">15 minutes</a></li>
+                                        <li><a onclick="setLength(20, 1)">20 minutes</a></li>
+                                        <li><a onclick="setLength(25, 1)">25 minutes</a></li>
+                                        <li><a onclick="setLength(25, 1)">30 minutes</a></li>
+                                        <li><a onclick="setLength(35, 1)">35 minutes</a></li>
+                                        <li><a onclick="setLength(40, 1)">40 minutes</a></li>
+                                        <li><a onclick="setLength(45, 1)">45 minutes</a></li>
+                                        <li><a onclick="setLength(50, 1)">50 minutes</a></li>
+                                        <li><a onclick="setLength(55, 1)">55 minutes</a></li>
+                                        <li><a onclick="setLength(60, 1)">60 minutes</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <br>
+                            <p class="text-center varela-font" style="color:gray">Manual mode</p>
+                            <div class="text-center">
+                                <div class="btn-group btn-group-lg btn-group-justified" role="group" aria-label="...">
+                                    <a type="button" class="btn btn-success" data-toggle="tooltip" title="Open Valve" data-container="body" onclick="openValve(1)">Open</a>
+                                    <a type="button" class="btn btn-danger" data-toggle="tooltip" title="Close Valve" data-container="body" onclick="closeValve(1)">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+<!--                zone 2-->
+
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-center">Zone 2</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-center">
+                                <p class="text-center varela-font" style="color:gray">Automatic mode</p>
+                                <div class="btn-group btn-group-justified " data-toggle="buttons">
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Sunday" data-container="body">
+                                        <input type="checkbox" name="options" id="option1" autocomplete="off">S
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Monday" data-container="body">
+                                        <input type="checkbox" name="options" id="option2" autocomplete="off">M
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Tuesday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">T
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Wednesday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">W
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Thursday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">T
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Friday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">F
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Saturday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">S
+                                    </label>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <small>Time:</small>
+                                <div class="btn-group dropup">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        00:00 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" >
+                                        <li><a onclick="setTime(this, 2)">00:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">01:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">02:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">03:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">04:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">05:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">06:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">07:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">08:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">09:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">10:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">11:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">12:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">13:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">14:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">15:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">16:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">17:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">18:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">19:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">20:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">21:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">22:00</a></li>
+                                        <li><a onclick="setTime(this, 2)">23:00</a></li>
+                                    </ul>
+                                </div>
+<!--                            </div>-->
+<!--                            <div class="text-center">-->
+                                <small style="padding-left:8px;">Length:</small>
+                                <div class="btn-group dropup">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       5 minutes <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" >
+                                        <li><a onclick="setLength(5, 2)">5 minutes</a></li>
+                                        <li><a onclick="setLength(10, 2)">10 minutes</a></li>
+                                        <li><a onclick="setLength(15, 2)">15 minutes</a></li>
+                                        <li><a onclick="setLength(20, 2)">20 minutes</a></li>
+                                        <li><a onclick="setLength(25, 2)">25 minutes</a></li>
+                                        <li><a onclick="setLength(30, 2)">30 minutes</a></li>
+                                        <li><a onclick="setLength(35, 2)">35 minutes</a></li>
+                                        <li><a onclick="setLength(40, 2)">40 minutes</a></li>
+                                        <li><a onclick="setLength(45, 2)">45 minutes</a></li>
+                                        <li><a onclick="setLength(50, 2)">50 minutes</a></li>
+                                        <li><a onclick="setLength(55, 2)">55 minutes</a></li>
+                                        <li><a onclick="setLength(60, 2)">60 minutes</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <br>
+                            <p class="text-center varela-font" style="color:gray">Manual mode</p>
+                            <div class="text-center">
+                                <div class="btn-group btn-group-lg btn-group-justified" role="group" aria-label="...">
+                                    <a type="button" class="btn btn-success" data-toggle="tooltip" title="Open Valve" data-container="body" onclick="openValve(2)">Open</a>
+                                    <a type="button" class="btn btn-danger" data-toggle="tooltip" title="Close Valve" data-container="body" onclick="closeValve(2)">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!--                zone 3-->
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 margin-top">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-center">Zone 3</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-center">
+                                <p class="text-center varela-font" style="color:gray">Automatic mode</p>
+                                <div class="btn-group btn-group-justified " data-toggle="buttons">
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Sunday" data-container="body">
+                                        <input type="checkbox" name="options" id="option1" autocomplete="off">S
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Monday" data-container="body">
+                                        <input type="checkbox" name="options" id="option2" autocomplete="off">M
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Tuesday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">T
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Wednesday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">W
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Thursday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">T
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Friday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">F
+                                    </label>
+                                    <label class="btn btn-primary" data-toggle="tooltip" title="Saturday" data-container="body">
+                                        <input type="checkbox" name="options" id="option3" autocomplete="off">S
+                                    </label>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <small>Time:</small>
+                                <div class="btn-group dropup">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        00:00 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" >
+                                        <li><a onclick="setTime(this, 3)">00:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">01:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">02:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">03:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">04:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">05:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">06:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">07:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">08:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">09:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">10:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">11:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">12:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">13:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">14:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">15:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">16:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">17:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">18:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">19:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">20:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">21:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">22:00</a></li>
+                                        <li><a onclick="setTime(this, 3)">23:00</a></li>
+                                    </ul>
+                                </div>
+<!--                            </div>-->
+<!--                            <div class="text-center">-->
+                                <small style="padding-left:8px;">Length:</small>
+                                <div class="btn-group dropup">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       5 minutes <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" >
+                                        <li><a onclick="setLength(5, 3)">5 minutes</a></li>
+                                        <li><a onclick="setLength(10, 3)">10 minutes</a></li>
+                                        <li><a onclick="setLength(15, 3)">15 minutes</a></li>
+                                        <li><a onclick="setLength(20, 3)">20 minutes</a></li>
+                                        <li><a onclick="setLength(25, 3)">25 minutes</a></li>
+                                        <li><a onclick="setLength(30, 3)">30 minutes</a></li>
+                                        <li><a onclick="setLength(35, 3)">35 minutes</a></li>
+                                        <li><a onclick="setLength(40, 3)">40 minutes</a></li>
+                                        <li><a onclick="setLength(45, 3)">45 minutes</a></li>
+                                        <li><a onclick="setLength(50, 3)">50 minutes</a></li>
+                                        <li><a onclick="setLength(55, 3)">55 minutes</a></li>
+                                        <li><a onclick="setLength(60, 3)">60 minutes</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <br>
+                            <p class="text-center varela-font" style="color:gray">Manual mode</p>
+                            <div class="text-center">
+                                <div class="btn-group btn-group-lg btn-group-justified" role="group" aria-label="...">
+                                    <a type="button" class="btn btn-success" data-toggle="tooltip" title="Open Valve" data-container="body" onclick="openValve(3)">Open</a>
+                                    <a type="button" class="btn btn-danger" data-toggle="tooltip" title="Close Valve" data-container="body" onclick="closeValve(3)">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--Zone's Settings row end-->
         </div>
-
     </section>
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/socket.io-1.3.7.js"></script>
-    <script src="js/dashboard.js"></script>
+    <script type='text/javascript' src='js/timepicki.js'></script>
+    <script type="text/javascript" src="js/dashboard.js"></script>
+
+
+
 </body>
 
 </html>
-
