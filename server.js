@@ -7,8 +7,8 @@ var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 var net = require('net');
-app.use(express.static('public'));
 var mensajesMonitor = [];
+app.use(express.static('public'));
 
 //VARIABLES PARA TCP.
 var TCP_PORT = 3150;
@@ -32,16 +32,20 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
+//Dashboards
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/public/dashboard.html');
+    res.sendFile(__dirname + '/views/dashboard.html');
 });
-
 
 //MONITOR DE CONEXIONES.
 app.get('/monitor', function (req, res) {
-    res.sendFile(__dirname + '/public/monitor.html');
+    res.sendFile(__dirname + '/views/monitor.html');
 });
 
+//404
+app.get('*', function (req, res) {
+    res.status(404).sendFile(__dirname + '/views/404.html');
+});
 //Socket.io Service
 io.on("connection", function (socket) {
     console.log("New socket.io client");
@@ -62,11 +66,17 @@ io.on("connection", function (socket) {
         console.log("HALF PILA REQUEST");
         try {
             console.log(1, "send");
-            setTimeout(function(){deviceConnected.write("H");}, 2);
+            setTimeout(function () {
+                deviceConnected.write("H");
+            }, 2);
             console.log(2, "send");
-            setTimeout(function(){deviceConnected.write("H");}, 2);
+            setTimeout(function () {
+                deviceConnected.write("H");
+            }, 2);
             console.log(3, "send");
-            setTimeout(function(){deviceConnected.write("H");}, 2);
+            setTimeout(function () {
+                deviceConnected.write("H");
+            }, 2);
             socket.emit("pilaRequest", {
                 success: true
             });
@@ -83,11 +93,17 @@ io.on("connection", function (socket) {
 
         try {
             console.log(1, "send");
-            setTimeout(function(){deviceConnected.write("F");}, 2);
+            setTimeout(function () {
+                deviceConnected.write("F");
+            }, 2);
             console.log(2, "send");
-            setTimeout(function(){deviceConnected.write("F");}, 2);
+            setTimeout(function () {
+                deviceConnected.write("F");
+            }, 2);
             console.log(3, "send");
-            setTimeout(function(){deviceConnected.write("F");}, 2);
+            setTimeout(function () {
+                deviceConnected.write("F");
+            }, 2);
             socket.emit("pilaRequest", {
                 success: true
             });
@@ -136,7 +152,7 @@ net.createServer(function (connection) {
         "cantidad": connections_number
     });
 
-     newMonitorInfo("NEW CONNECTION");
+    newMonitorInfo("NEW CONNECTION");
 
     connection.on('data', function (data) {
         //Converting buffer data to String
@@ -155,7 +171,7 @@ net.createServer(function (connection) {
 
             console.log("GOOD DATA");
 
-//            newMonitorInfo(data_str);
+            //            newMonitorInfo(data_str);
 
             currentLevels.pila = telemetry_data.p;
             currentLevels.raincube = telemetry_data.r;
