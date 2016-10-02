@@ -7,7 +7,7 @@ $(document).ready(function () {
     }
 
     socket.emit("dashboard", {
-        installID:"FL00001"
+        installID:"FL0001"
     });
     // Add scrollspy to <body>
     $('body').scrollspy({
@@ -52,14 +52,11 @@ socket.on("reconnect", function () {
     console.log("reconnected to socket.io");
 });
 
+socket.on("dashboardResult", function (data) {
+    console.log(data);
+});
 
-function fullPila() {
-    socket.emit("fullPila");
-}
 
-function halfPila() {
-    socket.emit("halfPila");
-}
 
 socket.on("pilaRequest", function (data) {
     if (data.success === true) {

@@ -26,8 +26,9 @@ var currentLevels = {
 
 //AWS & DynamoDB
 AWS.config.update({
-    region: "us-east-1",
-    endpoint: "https://dynamodb.us-east-1.amazonaws.com",
+
+    region: "us-west-2",
+    endpoint: "https://dynamodb.us-west-2.amazonaws.com",
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -71,8 +72,10 @@ io.on("connection", function (socket) {
         docClient.query(params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", err);
+                socket.emit("dashboardResult", err);
             } else {
                 console.log("Query succeeded.");
+                 socket.emit("dashboardResult", data);
                 data.Items.forEach(function (item) {
                     console.log("-" + JSON.stringify(item));
                 });
