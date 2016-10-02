@@ -1,8 +1,14 @@
+var socket = io();
+
 $(document).ready(function () {
 
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {} else {
         $('[data-toggle="tooltip"]').tooltip();
     }
+
+    socket.emit("dashboard", {
+        installID:"FL00001"
+    });
     // Add scrollspy to <body>
     $('body').scrollspy({
         target: ".navbar",
@@ -32,7 +38,7 @@ $(document).ready(function () {
     });
 });
 
-var socket = io();
+
 
 socket.on("connect", function () {
     console.log("connected to socket.io");
@@ -119,19 +125,30 @@ socket.on("newLevel", function (levels) {
 
 function manualOpen(zone) {
     socket.emit("openValve", {
-        zone: zone
+        zone: zone,
+        installID: "tampa01"
     });
 }
 
 function manualClose(zone) {
     socket.emit("closeValve", {
-        zone: zone
+        zone: zone,
+        installID: "tampa01"
     });
 }
 
 function setLength(length, zone) {
     socket.emit("updateLength", {
         zone: zone,
-        length: length
+        length: length,
+        installID: "tampa01"
+    });
+}
+
+function setTime(time, zone) {
+    socket.emit("updateTime", {
+        zone: zone,
+        length: length,
+        installID: "tampa01"
     });
 }

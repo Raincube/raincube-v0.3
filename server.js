@@ -1,6 +1,5 @@
 //Amazon Web Services
 var AWS = require("aws-sdk");
-
 //Express server
 var express = require("express");
 var app = express();
@@ -16,6 +15,7 @@ var HTTP_PORT = process.env.PORT || 8080;
 var connections_number = 0;
 //LIBRERIAS PARA TCP
 var querystring = require('querystring');
+var deviceConnections = {};
 
 //tcp device connection.
 var deviceConnected;
@@ -48,72 +48,50 @@ app.get('*', function (req, res) {
 });
 //Socket.io Service
 io.on("connection", function (socket) {
-    console.log("New socket.io client");
-
-    //EVENTOS DEL WEBSITE........
-    //EN EL MONITOR DE CONEXIONES, SE ENVIA LA CANTIDAD DE CONEXIONES ACTUALES.
+    console.log("New socket.io client connected");
     socket.emit("newLevel", currentLevels);
-
     socket.emit("connectionsUpdated", {
         "cantidad": connections_number
     });
-
     io.emit("newDatafromTCP", {
         "data": mensajesMonitor
     });
 
-    socket.on("halfPila", function (data) {
-        console.log("HALF PILA REQUEST");
-        try {
-            console.log(1, "send");
-            setTimeout(function () {
-                deviceConnected.write("H");
-            }, 2);
-            console.log(2, "send");
-            setTimeout(function () {
-                deviceConnected.write("H");
-            }, 2);
-            console.log(3, "send");
-            setTimeout(function () {
-                deviceConnected.write("H");
-            }, 2);
-            socket.emit("pilaRequest", {
-                success: true
-            });
-        } catch (e) {
-            console.log("ERROR: unable to connect to Pila", e)
-            socket.emit("pilaRequest", {
-                success: false
-            });
-        }
+    socket.on("dashboard", function (data) {
+        console.log("querying for dashboard.", data);
+
+        var params = {
+            TableName: 'raincube_garden_settings',
+            KeyConditionExpression: 'install_id = :install_id',
+            ExpressionAttributeValues: {
+                ':install_id': data.installID
+            },
+        };
+
+        docClient.query(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", err);
+            } else {
+                console.log("Query succeeded.");
+                data.Items.forEach(function (item) {
+                    console.log("-" + JSON.stringify(item));
+                });
+            }
+        });
+
+
     });
 
-    socket.on("fullPila", function (data) {
-        console.log("FULL PILA REQUEST");
 
-        try {
-            console.log(1, "send");
-            setTimeout(function () {
-                deviceConnected.write("F");
-            }, 2);
-            console.log(2, "send");
-            setTimeout(function () {
-                deviceConnected.write("F");
-            }, 2);
-            console.log(3, "send");
-            setTimeout(function () {
-                deviceConnected.write("F");
-            }, 2);
-            socket.emit("pilaRequest", {
-                success: true
-            });
-        } catch (e) {
-            console.log("ERROR: unable to connect to Pila", e)
-            socket.emit("pilaRequest", {
-                success: false
-            });
-        }
+
+    socket.on("openValve", function (data) {
+        console.log(data);
     });
+
+    socket.on("closeValve", function (data) {
+        console.log(data);
+    });
+
 });
 
 
@@ -141,9 +119,6 @@ function newMonitorInfo(newString) {
 net.createServer(function (connection) {
 
     console.log("*************NEW TCP CONNECTION**************");
-
-    deviceConnected = connection;
-
     connections_number++
 
     io.emit("newLevel", currentLevels);
@@ -171,12 +146,10 @@ net.createServer(function (connection) {
 
             console.log("GOOD DATA");
 
-            //            newMonitorInfo(data_str);
+            if (typeof deviceConnections[telemetry_data.id] === "undefined") {
+                deviceConnections[telemetry_data.id] = connection;
+            }
 
-            currentLevels.pila = telemetry_data.p;
-            currentLevels.raincube = telemetry_data.r;
-
-            io.emit("newLevel", currentLevels);
         }
     });
 
