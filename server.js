@@ -17,18 +17,9 @@ var connections_number = 0;
 var querystring = require('querystring');
 var deviceConnections = {};
 
-//tcp device connection.
-var deviceConnected;
-var currentLevels = {
-    pila: 0,
-    raincube: 0
-};
-
 //AWS & DynamoDB
 AWS.config.update({
-
-    region: "us-west-2",
-    endpoint: "https://dynamodb.us-west-2.amazonaws.com",
+    region: "us-west-2"
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -50,7 +41,6 @@ app.get('*', function (req, res) {
 //Socket.io Service
 io.on("connection", function (socket) {
     console.log("New socket.io client connected");
-    socket.emit("newLevel", currentLevels);
     socket.emit("connectionsUpdated", {
         "cantidad": connections_number
     });
@@ -75,14 +65,9 @@ io.on("connection", function (socket) {
                 socket.emit("dashboardResult", err);
             } else {
                 console.log("Query succeeded.");
-                 socket.emit("dashboardResult", data);
-                data.Items.forEach(function (item) {
-                    console.log("-" + JSON.stringify(item));
-                });
+                socket.emit("dashboardResult", data.Items[0]);
             }
         });
-
-
     });
 
 
@@ -103,6 +88,7 @@ function newMonitorInfo(newString) {
     if (mensajesMonitor.length === 20) {
         mensajesMonitor.shift();
     }
+
     var fecha = new Date().getTime();
 
     var contenido = {
@@ -115,17 +101,12 @@ function newMonitorInfo(newString) {
     io.emit("newDatafromTCP", {
         "data": mensajesMonitor
     });
-
-
 }
 //TCP server
 net.createServer(function (connection) {
 
     console.log("*************NEW TCP CONNECTION**************");
     connections_number++
-
-    io.emit("newLevel", currentLevels);
-
     io.emit("connectionsUpdated", {
         "cantidad": connections_number
     });
@@ -159,9 +140,7 @@ net.createServer(function (connection) {
     connection.on('close', function () {
         console.log('TCP DEVICE DISCONNECTED.');
         connections_number--;
-
         newMonitorInfo("DEVICE DISCONNECTED");
-
         io.emit("connectionsUpdated", {
             "cantidad": connections_number
         });

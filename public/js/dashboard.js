@@ -1,4 +1,7 @@
 var socket = io();
+var spinner;
+var INSTALL_ID = "FL0001"
+var DEVICE_ID = "0001"
 
 $(document).ready(function () {
 
@@ -6,39 +9,35 @@ $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     }
 
+    var opts = {
+        lines: 13,
+        length: 15,
+        width: 8,
+        radius: 15,
+        scale: 1,
+        corners: 1,
+        color: '#000',
+        opacity: 0.25,
+        rotate: 0,
+        direction: 1,
+        speed: 1,
+        trail: 60,
+        fps: 20,
+        zIndex: 2e9,
+        className: 'spinner',
+        top: '50%',
+        left: '50%',
+        shadow: false,
+        hwaccel: false,
+        position: 'absolute'
+    }
+    var target = document.getElementById('main-background');
+    spinner = new Spinner(opts).spin(target);
     socket.emit("dashboard", {
-        installID:"FL0001"
-    });
-    // Add scrollspy to <body>
-    $('body').scrollspy({
-        target: ".navbar",
-        offset: 50
+        installID: INSTALL_ID
     });
 
-    // Add smooth scrolling on all links inside the navbar
-    $("#myNavbar a").on('click', function (event) {
-        // Make sure this.hash has a value before overriding default behavior
-        if (this.hash !== "") {
-            // Prevent default anchor click behavior
-            event.preventDefault();
-
-            // Store hash
-            var hash = this.hash;
-
-            // Using jQuery's animate() method to add smooth page scroll
-            // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-            $('html, body').animate({
-                scrollTop: $(hash).offset().top
-            }, 250, function () {
-
-                // Add hash (#) to URL when done scrolling (default click behavior)
-                window.location.hash = hash;
-            });
-        } // End if
-    });
 });
-
-
 
 socket.on("connect", function () {
     console.log("connected to socket.io");
@@ -52,85 +51,38 @@ socket.on("reconnect", function () {
     console.log("reconnected to socket.io");
 });
 
+//This is how we get the dashboard info
 socket.on("dashboardResult", function (data) {
+    spinner.stop();
     console.log(data);
-});
-
-
-
-socket.on("pilaRequest", function (data) {
-    if (data.success === true) {
-
-    } else {
-        alert("No se pudo comunicar con el equipo. Verifique conexión.");
-    }
-});
-
-socket.on("newLevel", function (levels) {
-
-    var pilaHeight = 50;
-    var raincubeHeight = 90;
-    var correccionPila = levels.pila - 35;
-    var pilaWaterHeight = pilaHeight - correccionPila;
-    var raincubeWaterHeight = raincubeHeight - levels.raincube;
-
-    var pilaFirstStep = pilaWaterHeight * 100;
-    var pilaPercentage = pilaFirstStep / pilaHeight;
-
-    var raincubeFirstStep = raincubeWaterHeight * 100;
-    var raincubePercentage = raincubeFirstStep / raincubeHeight;
-
-    if (pilaPercentage < 0) {
-        pilaPercentage = 0
-    }
-
-    if (raincubePercentage < 0) {
-        raincubePercentage = 0
-    }
-
-    if (pilaPercentage < 10) {
-        $("#pilaBar").addClass("progress-bar-danger");
-
-    } else {
-        $("#pilaBar").removeClass("progress-bar-danger");
-    }
-
-    if (raincubePercentage < 10) {
+    
+    $("#raincubeBar").css('width', data.raincube_level + '%');
+    $("#raincubeBar").text(data.raincube_level + " %");
+    if(data.raincube_level < 10) {
         $("#raincubeBar").addClass("progress-bar-danger");
+        if (data.raincube_level < 3) {
+            $("#raincubeBar").text("");
+        }
     } else {
         $("#raincubeBar").removeClass("progress-bar-danger");
     }
-
-    if (raincubePercentage > 100) {
-        raincubePercentage = 100
-    }
-
-    if (pilaPercentage > 100) {
-        pilaPercentage = 100
-    }
-
-    var noDecimalasRaincubePercentage = Number(raincubePercentage).toFixed(0);
-    var noDecimalsPilaPercentage = Number(pilaPercentage).toFixed(0);
-
-    $("#raincubeBar").css('width', noDecimalasRaincubePercentage + '%').attr('aria-valuenow', noDecimalasRaincubePercentage);
-    $("#pilaBar").css('width', noDecimalsPilaPercentage + '%').attr('aria-valuenow', noDecimalsPilaPercentage);
-
-    $("#raincubeBar").text(noDecimalasRaincubePercentage + " %");
-    $("#pilaBar").text(noDecimalsPilaPercentage + " %");
+    
+    
+    
 
 });
 
 function manualOpen(zone) {
     socket.emit("openValve", {
         zone: zone,
-        installID: "tampa01"
+        installID: INSTALL_ID
     });
 }
 
 function manualClose(zone) {
     socket.emit("closeValve", {
         zone: zone,
-        installID: "tampa01"
+        installID: INSTALL_ID
     });
 }
 
@@ -138,7 +90,7 @@ function setLength(length, zone) {
     socket.emit("updateLength", {
         zone: zone,
         length: length,
-        installID: "tampa01"
+        installID: INSTALL_ID
     });
 }
 
@@ -146,6 +98,6 @@ function setTime(time, zone) {
     socket.emit("updateTime", {
         zone: zone,
         length: length,
-        installID: "tampa01"
+        installID: INSTALL_ID
     });
 }
