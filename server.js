@@ -10,8 +10,8 @@ var mensajesMonitor = [];
 app.use(express.static('public'));
 
 //VARIABLES PARA TCP.
-var TCP_PORT = 3150;
-var HTTP_PORT = process.env.PORT || 8080;
+var TCP_PORT = process.env.TCP_PORT || 3150;
+var HTTP_PORT = process.env.PORT || 3000;
 var connections_number = 0;
 //LIBRERIAS PARA TCP
 var querystring = require('querystring');
