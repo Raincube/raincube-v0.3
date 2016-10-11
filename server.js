@@ -11,7 +11,7 @@ app.use(express.static('public'));
 
 //VARIABLES PARA TCP.
 var TCP_PORT = process.env.TCP_PORT || 3150;
-var HTTP_PORT = process.env.PORT || 3000;
+var HTTP_PORT = process.env.PORT || 8080;
 var connections_number = 0;
 //LIBRERIAS PARA TCP
 var querystring = require('querystring');
@@ -19,7 +19,7 @@ var deviceConnections = {};
 
 //AWS & DynamoDB
 AWS.config.update({
-    region: "us-west-2"
+    region: "us-west-2",
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
@@ -70,18 +70,76 @@ io.on("connection", function (socket) {
         });
     });
 
+    socket.on("openValve", function (userData) {
+        console.log("openValve: ", userData);
+        var params = {
+            TableName: 'raincube_garden_settings',
+            KeyConditionExpression: 'install_id = :install_id',
+            ExpressionAttributeValues: {
+                ':install_id': userData.installID
+            },
+        };
 
+        docClient.query(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", err);
+                socket.emit("dashboardResult", err);
+            } else {
+                console.log("Query succeeded.", data.Items[0]);
+                var installationInfo = data.Items[0];
 
-    socket.on("openValve", function (data) {
-        console.log(data);
+                try {
+                    deviceConnections[installationInfo.device_id].write("0" + userData.zone + "OP" + "00");
+                    socket.emit("openValveResult", {
+                        success: true
+                    });
+                } catch (e) {
+                    console.log("error foo!");
+                    socket.emit("openValveResult", {
+                        success: false,
+                        errorMessage: "The device is not connected. Unable to complete the action."
+                    });
+                }
+            }
+        });
     });
 
-    socket.on("closeValve", function (data) {
-        console.log(data);
+    socket.on("closeValve", function (userData) {
+        console.log("closeValve: ", userData);
+        var params = {
+            TableName: 'raincube_garden_settings',
+            KeyConditionExpression: 'install_id = :install_id',
+            ExpressionAttributeValues: {
+                ':install_id': userData.installID
+            },
+        };
+
+        docClient.query(params, function (err, data) {
+            if (err) {
+                console.error("Unable to query. Error:", err);
+                socket.emit("dashboardResult", err);
+            } else {
+                console.log("Query succeeded.", data.Items[0]);
+                var installationInfo = data.Items[0];
+
+                try {
+                    deviceConnections[installationInfo.device_id].write("0" + userData.zone + "CL" + "00");
+                    socket.emit("openValveResult", {
+                        success: true
+                    });
+                } catch (e) {
+                    console.log("error foo!");
+                    socket.emit("closeValveResult", {
+                        success: false,
+                        errorMessage: "The device is not connected. Unable to complete the action."
+                    });
+                }
+            }
+        });
+
     });
 
 });
-
 
 function newMonitorInfo(newString) {
 
@@ -104,8 +162,6 @@ function newMonitorInfo(newString) {
 }
 //TCP server
 net.createServer(function (connection) {
-
-    console.log("*************NEW TCP CONNECTION**************");
     connections_number++
     io.emit("connectionsUpdated", {
         "cantidad": connections_number
@@ -122,23 +178,36 @@ net.createServer(function (connection) {
         //CONVIRTIENDO DATA DE STRING A JSON.
         var telemetry_data = querystring.parse(data_str);
 
-        if (telemetry_data.id == undefined || telemetry_data.r == undefined || telemetry_data.p == undefined) {
+        if (telemetry_data.id == undefined || telemetry_data.r == undefined) {
             //If the keys have undefined data, do nothing.
             console.log("undefined data");
             return;
         } else {
-
-            console.log("GOOD DATA");
-
+            console.log("New Good DATA");
+            //Verify if it's a new connection or if it exists
             if (typeof deviceConnections[telemetry_data.id] === "undefined") {
+                //if the connection is not on in the object, Add it to the deviceConnections object.
                 deviceConnections[telemetry_data.id] = connection;
+            } else {
+                //If there is a connection with the same ID in the object, check if it is the same as this one.
+                //If it is different close and destroy the previous one, and replace it with the new one.
+                //Else do nothing.
+                console.log("existing key")
+                if (deviceConnections[telemetry_data.id] !== connection) {
+                    console.log("different connection value")
+                    deviceConnections[telemetry_data.id].destroy();
+                    deviceConnections[telemetry_data.id] = connection;
+                } else {
+                    console.log("same connection value");
+                }
             }
+
+            //ADD THE DATA TO THE SETTINGS.
 
         }
     });
 
     connection.on('close', function () {
-        console.log('TCP DEVICE DISCONNECTED.');
         connections_number--;
         newMonitorInfo("DEVICE DISCONNECTED");
         io.emit("connectionsUpdated", {

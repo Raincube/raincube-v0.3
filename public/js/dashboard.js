@@ -66,13 +66,15 @@ socket.on("dashboardResult", function (data) {
     } else {
         $("#raincubeBar").removeClass("progress-bar-danger");
     }
-    
-    
-    
-
 });
 
 function manualOpen(zone) {
+    socket.once("openValveResult", function (data) {
+        if (data.success !== true) {
+            alert(data.errorMessage || "Error");
+        }
+    });
+
     socket.emit("openValve", {
         zone: zone,
         installID: INSTALL_ID
@@ -80,6 +82,12 @@ function manualOpen(zone) {
 }
 
 function manualClose(zone) {
+
+    socket.once("closeValveResult", function (data) {
+        if (data.success !== true) {
+            alert(data.errorMessage || "Error");
+        }
+    });
     socket.emit("closeValve", {
         zone: zone,
         installID: INSTALL_ID
