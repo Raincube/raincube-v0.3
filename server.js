@@ -90,6 +90,7 @@ io.on("connection", function (socket) {
 
                 try {
                     deviceConnections[installationInfo.device_id].write("0" + userData.zone + "OP" + "00");
+                    newMonitorInfo("SERVER ---> " + "0" + userData.zone + "OP" + "00");
                     socket.emit("openValveResult", {
                         success: true
                     });
@@ -99,6 +100,7 @@ io.on("connection", function (socket) {
                         success: false,
                         errorMessage: "The device is not connected. Unable to complete the action."
                     });
+                    newMonitorInfo("SERVER ---> Error: The device is not connected. Unable to complete the action.");
                 }
             }
         });
@@ -124,6 +126,7 @@ io.on("connection", function (socket) {
 
                 try {
                     deviceConnections[installationInfo.device_id].write("0" + userData.zone + "CL" + "00");
+                    newMonitorInfo("SERVER ---> " + "0" + userData.zone + "CL" + "00");
                     socket.emit("openValveResult", {
                         success: true
                     });
@@ -133,6 +136,7 @@ io.on("connection", function (socket) {
                         success: false,
                         errorMessage: "The device is not connected. Unable to complete the action."
                     });
+                    newMonitorInfo("SERVER ---> Error: The device is not connected. Unable to complete the action.");
                 }
             }
         });
