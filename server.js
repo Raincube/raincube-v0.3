@@ -16,6 +16,7 @@ var connections_number = 0;
 //LIBRERIAS PARA TCP
 var querystring = require('querystring');
 var deviceConnections = {};
+var cubeLevels = {};
 
 //AWS & DynamoDB
 AWS.config.update({
@@ -24,12 +25,18 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 
+var cron = require('node-cron');
+
+//cron.schedule('* * * * *', function () {
+//    console.log('running a task every minute', new Date());
+//});
+
 //Dashboards
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/views/dashboard.html');
 });
 
-//MONITOR DE CONEXIONES.
+//dev-monitor
 app.get('/monitor', function (req, res) {
     res.sendFile(__dirname + '/views/monitor.html');
 });
@@ -38,6 +45,7 @@ app.get('/monitor', function (req, res) {
 app.get('*', function (req, res) {
     res.status(404).sendFile(__dirname + '/views/404.html');
 });
+
 //Socket.io Service
 io.on("connection", function (socket) {
     console.log("New socket.io client connected");
@@ -46,6 +54,10 @@ io.on("connection", function (socket) {
     });
     io.emit("newDatafromTCP", {
         "data": mensajesMonitor
+    });
+
+    socket.on("subToDevice", function (data) {
+        socket.join(data.deviceID);
     });
 
     socket.on("dashboard", function (data) {
@@ -90,12 +102,17 @@ io.on("connection", function (socket) {
 
                 try {
                     deviceConnections[installationInfo.device_id].write("0" + userData.zone + "OP" + "00");
+                    setTimeout(function () {
+                        deviceConnections[installationInfo.device_id].write("0" + userData.zone + "OP" + "00");
+                    }, 20);
+                    setTimeout(function () {
+                        deviceConnections[installationInfo.device_id].write("0" + userData.zone + "OP" + "00");
+                    }, 20);
                     newMonitorInfo("SERVER ---> " + "0" + userData.zone + "OP" + "00");
                     socket.emit("openValveResult", {
                         success: true
                     });
                 } catch (e) {
-                    console.log("error foo!");
                     socket.emit("openValveResult", {
                         success: false,
                         errorMessage: "The device is not connected. Unable to complete the action."
@@ -113,7 +130,7 @@ io.on("connection", function (socket) {
             KeyConditionExpression: 'install_id = :install_id',
             ExpressionAttributeValues: {
                 ':install_id': userData.installID
-            },
+            }
         };
 
         docClient.query(params, function (err, data) {
@@ -126,12 +143,18 @@ io.on("connection", function (socket) {
 
                 try {
                     deviceConnections[installationInfo.device_id].write("0" + userData.zone + "CL" + "00");
+                    setTimeout(function () {
+                        deviceConnections[installationInfo.device_id].write("0" + userData.zone + "CL" + "00");
+                    }, 20);
+                    setTimeout(function () {
+                        deviceConnections[installationInfo.device_id].write("0" + userData.zone + "CL" + "00");
+                    }, 20);
+
                     newMonitorInfo("SERVER ---> " + "0" + userData.zone + "CL" + "00");
                     socket.emit("openValveResult", {
                         success: true
                     });
                 } catch (e) {
-                    console.log("error foo!");
                     socket.emit("closeValveResult", {
                         success: false,
                         errorMessage: "The device is not connected. Unable to complete the action."
@@ -140,9 +163,7 @@ io.on("connection", function (socket) {
                 }
             }
         });
-
     });
-
 });
 
 function newMonitorInfo(newString) {
@@ -162,6 +183,34 @@ function newMonitorInfo(newString) {
 
     io.emit("newDatafromTCP", {
         "data": mensajesMonitor
+    });
+}
+
+function broadcastNewLevels(data) {
+    var raincubeHeight = 90;
+    var percentageLevel = Number(((raincubeHeight - data.r) * 100) / raincubeHeight).toFixed(0);
+    var params = {
+        TableName: 'raincube_garden_settings',
+        Key: {
+            "install_id": 'FL0001'
+        },
+        UpdateExpression: 'set raincube_level = :newLevel',
+        ExpressionAttributeValues: {
+            ':newLevel': parseFloat(percentageLevel)
+        }
+    };
+
+    docClient.update(params, function (err, data) {
+        if (err) {
+            console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+        } else {
+            console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+        }
+    });
+
+    cubeLevels[data.id] = data.r;
+    io.to(data.id).emit("newLevel", {
+        raincube_level: percentageLevel
     });
 }
 //TCP server
@@ -205,8 +254,8 @@ net.createServer(function (connection) {
                     console.log("same connection value");
                 }
             }
-
             //ADD THE DATA TO THE SETTINGS.
+            broadcastNewLevels(telemetry_data);
 
         }
     });

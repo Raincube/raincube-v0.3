@@ -1,7 +1,7 @@
 var socket = io();
 var spinner;
 var INSTALL_ID = "FL0001"
-var DEVICE_ID = "0001"
+var DEVICE_ID = "001"
 
 $(document).ready(function () {
 
@@ -41,6 +41,9 @@ $(document).ready(function () {
 
 socket.on("connect", function () {
     console.log("connected to socket.io");
+    socket.emit("subToDevice", {
+        deviceID: DEVICE_ID
+    })
 });
 
 socket.on("disconnect", function () {
@@ -55,19 +58,30 @@ socket.on("reconnect", function () {
 socket.on("dashboardResult", function (data) {
     spinner.stop();
     console.log(data);
-    
-    $("#raincubeBar").css('width', data.raincube_level + '%');
-    $("#raincubeBar").text(data.raincube_level + " %");
+    $("#raincubeLevelBar").css('width', data.raincube_level + '%');
+    $("#raincubeLevelBar").text(data.raincube_level + " %");
     if(data.raincube_level < 10) {
-        $("#raincubeBar").addClass("progress-bar-danger");
+        $("#raincubeLevelBar").addClass("progress-bar-danger");
         if (data.raincube_level < 3) {
-            $("#raincubeBar").text("");
+            $("#raincubeLevelBar").text("");
         }
     } else {
-        $("#raincubeBar").removeClass("progress-bar-danger");
+        $("#raincubeLevelBar").removeClass("progress-bar-danger");
     }
 });
 
+
+socket.on("newLevel", function(data){
+
+    if (data.raincube_level < 10) {
+        $("#raincubeLevelBar").addClass("progress-bar-danger");
+    } else {
+        $("#raincubeLevelBar").removeClass("progress-bar-danger");
+    }
+
+    $("#raincubeLevelBar").css('width', data.raincube_level + '%').attr('aria-valuenow', data.raincube_level);
+    $("#raincubeLevelBar").text(data.raincube_level + " %");
+})
 function manualOpen(zone) {
     socket.once("openValveResult", function (data) {
         if (data.success !== true) {
