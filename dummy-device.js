@@ -6,7 +6,7 @@ var socket;
 if (local === true) {
      socket = net.connect(3150);
 } else {
-    socket = net.connect(3150, "raincube-garden.us-west-2.elasticbeanstalk.com");
+    socket = net.connect(3150, "raincube.garden");
 }
 
 socket.on("connect", function (data) {
