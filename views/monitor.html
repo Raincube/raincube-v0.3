@@ -49,8 +49,7 @@
             <div class="navbar-header">
                 <a href="/" class="navbar-brand" id="drop-image"><img src="./images/favicon-32x32.png"></a>
                 <a href="/" class="navbar-brand"><strong>Rain</strong>cube</a>
-<!--                <a href="/" class="navbar-brand" style="padding-left:0px;"><strong>Rain</strong>cube</a>-->
-                <a href="/monitor" class="btn btn-link navbar-btn pull-right" data-toggle="tooltip" data-placement="bottom" title="TCP/IP Connections"><small>Active connections: </small><strong id="cantidadLabel" style="color:black;"></strong></a>
+                <p class="navbar-text pull-right" data-toggle="tooltip" data-placement="bottom" title="TCP/IP Connections"><small>Active connections: </small><strong id="cantidadLabel" style="color:black;"></strong></p>
             </div>
         </div>
 
@@ -59,7 +58,7 @@
     <div class="container" style="margin-top:75px;">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h3><span class="glyphicon glyphicon-th-list"></span><span class="varela-font"> Last data packages received</span></h3>
+                <h3><span class="glyphicon glyphicon-th-list"></span><span class="varela-font"> Last data packages received</span> <button class="btn btn-default pull-right" onclick="sendToAll()">hello2all</button></h3>
                 <div class="separator"></div>
             </div>
 
@@ -105,6 +104,10 @@
                 }
             });
         });
+
+        function sendToAll() {
+           socket.emit("sendToAll");
+        }
     </script>
 
 </body>

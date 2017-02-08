@@ -8,6 +8,7 @@ var io = require("socket.io")(http);
 var net = require('net');
 var mensajesMonitor = [];
 app.use(express.static('public'));
+var allTCPConnections = [];
 
 //VARIABLES PARA TCP.
 var TCP_PORT = process.env.TCP_PORT || 3150;
@@ -26,10 +27,6 @@ AWS.config.update({
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 var cron = require('node-cron');
-
-//cron.schedule('* * * * *', function () {
-//    console.log('running a task every minute', new Date());
-//});
 
 //Dashboards
 app.get('/', function (req, res) {
@@ -58,6 +55,29 @@ io.on("connection", function (socket) {
 
     socket.on("subToDevice", function (data) {
         socket.join(data.deviceID);
+    });
+
+    socket.on("sendToAll", function (data, res) {
+        console.log("sendToAll", allTCPConnections.length)
+
+        coso.getConnections(function (err, count) {
+            if (!err) {
+                if (count > 0) {
+                    newMonitorInfo("sending hello to all tcp connections, " + count + " connections registered.")
+                    allTCPConnections.forEach(function (tcpConnection) {
+                        try  {
+                            tcpConnection.write("hello");
+                            newMonitorInfo("hello sent successfully");
+                        } catch (error) {
+                            newMonitorInfo("error sending Hello")
+                            console.log("error al enviar data", error)
+                        }
+                    });
+                } else {
+                    newMonitorInfo(count + " connections registered.")
+                }
+            }
+        });
     });
 
     socket.on("dashboard", function (data) {
@@ -214,11 +234,13 @@ function broadcastNewLevels(data) {
     });
 }
 //TCP server
-net.createServer(function (connection) {
+var coso = net.createServer(function (connection) {
     connections_number++
     io.emit("connectionsUpdated", {
         "cantidad": connections_number
     });
+
+    allTCPConnections.push(connection);
 
     newMonitorInfo("NEW CONNECTION");
 
@@ -256,7 +278,6 @@ net.createServer(function (connection) {
             }
             //ADD THE DATA TO THE SETTINGS.
             broadcastNewLevels(telemetry_data);
-
         }
     });
 
@@ -267,8 +288,6 @@ net.createServer(function (connection) {
             "cantidad": connections_number
         });
     });
-
-
 
     connection.setTimeout(10000, function () {
         // when the client is inactive, server close the connection, trigger 'timeout' event
