@@ -289,16 +289,6 @@ var coso = net.createServer(function (connection) {
         });
     });
 
-    connection.setTimeout(10000, function () {
-        // when the client is inactive, server close the connection, trigger 'timeout' event
-    });
-
-    connection.on('timeout', function () {
-        //when 'timeout' event is detected, the client connection is destroyed.
-        //remove the client from connections
-        connection.destroy();
-    });
-
 }).listen(TCP_PORT, function () {
     console.log('TCP Server listening 😎');
 });
