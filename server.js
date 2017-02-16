@@ -122,12 +122,6 @@ io.on("connection", function (socket) {
 
                 try {
                     deviceConnections[installationInfo.device_id].write("0" + userData.zone + "OP" + "00");
-                    setTimeout(function () {
-                        deviceConnections[installationInfo.device_id].write("0" + userData.zone + "OP" + "00");
-                    }, 20);
-                    setTimeout(function () {
-                        deviceConnections[installationInfo.device_id].write("0" + userData.zone + "OP" + "00");
-                    }, 20);
                     newMonitorInfo("SERVER ---> " + "0" + userData.zone + "OP" + "00");
                     socket.emit("openValveResult", {
                         success: true
@@ -163,13 +157,6 @@ io.on("connection", function (socket) {
 
                 try {
                     deviceConnections[installationInfo.device_id].write("0" + userData.zone + "CL" + "00");
-                    setTimeout(function () {
-                        deviceConnections[installationInfo.device_id].write("0" + userData.zone + "CL" + "00");
-                    }, 20);
-                    setTimeout(function () {
-                        deviceConnections[installationInfo.device_id].write("0" + userData.zone + "CL" + "00");
-                    }, 20);
-
                     newMonitorInfo("SERVER ---> " + "0" + userData.zone + "CL" + "00");
                     socket.emit("openValveResult", {
                         success: true
